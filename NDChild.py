@@ -9,7 +9,7 @@ class NDChild(object):
         self.spEtrigger(s)    #parameter 1
         self.hipEtrigger(s)   #parameter 2
         self.hcpEtrigger(s)   #parameter 3
-        #self.optEtrigger(s)   #parameter 4
+        self.optEtrigger(s)   #parameter 4
         self.nsEtrigger(s)    #parameter 5
         self.ntEtrigger(s)    #parameter 6
         self.whmEtrigger(s)   #parameter 7
@@ -70,11 +70,14 @@ class NDChild(object):
         if self.grammar["TM"] > 0.5 and "[+WA]" not in s.sentenceStr:
             self.adjustweight("OPT",1,self.r)
          
+        #elif 
+         
         
 
     def nsEtrigger(self, s):
         if s.inflection == "DEC" and "S" not in s.sentenceStr and s.outOblique():
             self.adjustweight("NS",1,self.r)
+            self.adjustweight("OPT",1, self.r)
         elif s.inflection == "DEC" and "S" in s.sentenceStr and s.outOblique():
             self.adjustweight("NS",0,self.conservativerate)
 
@@ -133,15 +136,25 @@ class NDChild(object):
                 Sindex = s.sentenceList.index("S")
                 if Sindex > 0 and s.sentenceList.index("Aux") == Sindex + 1:
                     self.adjustweight("ItoC", 0, self.r)
+                
+                elif s.sentenceList.index("Aux") == 0 or s.sentenceList[-1] == "Aux":
+                    self.adjustweight("ItoC", 1, self.r)
         
             elif sp > 0.5 and hip > 0.5: # (Word orders 2, 6) #subject and IP final, aux to the left of subject
                 AuxIndex = s.sentenceList.index("Aux")
                 if (AuxIndex > 0 and s.sentenceList.index("S") == AuxIndex + 1):
                     self.adjustweight("ItoC", 0, self.r)
+                
+                elif s.sentenceList.index("Aux") == 0 or s.sentenceList[-1] == "Aux":
+                    self.adjustweight("ItoC", 1, self.r) 
+                
+              
            
             elif sp > 0.5 and hip < 0.5 and hcp > 0.5 and "Verb" in s.sentenceList: #subject and C final, IP initial, Aux immediately follows verb
                 if s.sentenceList.index("Verb") == s.sentenceList.index("Aux") + 1:
                     self.adjustweight("ItoC", 0, self.conservativerate)
+                elif s.sentenceList.index("Aux") == 0 or s.sentenceList[-1] == "Aux":
+                    self.adjustweight("ItoC", 1, self.r)
 
             elif sp < 0.5 and hip > 0.5 and hcp < 0.5 and "Verb" in s.sentenceList: #subject and C initial, IP final, Aux immediately precedes verb
                 if s.sentenceList.index("Aux") == s.sentenceList.index("Verb") + 1:
