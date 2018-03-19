@@ -153,7 +153,7 @@ class NDChild(object):
                 elif s.sentenceList.index("Aux") == 0:
                     self.adjustweight("ItoC", 1, self.r) 
                 
-                elif s.sentenceList[-1] == "Aux" and s.sentenceList.index("S") == AuxIndex - 1):
+                elif s.sentenceList[-1] == "Aux" and s.sentenceList.index("S") == (AuxIndex - 1):
                     self.adjustweight("ItoC", 1, self.r)
               
            
