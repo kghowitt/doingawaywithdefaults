@@ -137,23 +137,32 @@ class NDChild(object):
                 if Sindex > 0 and s.sentenceList.index("Aux") == Sindex + 1:
                     self.adjustweight("ItoC", 0, self.r)
                 
-                elif s.sentenceList.index("Aux") == 0 or s.sentenceList[-1] == "Aux":
+                elif hcp < 0.5 and (s.sentenceList.index("Aux")-s.sentenceList.index("S") < 0: 
+                #above code aux - s position less than 0 means aux precedes s 
                     self.adjustweight("ItoC", 1, self.r)
+
+                elif hcp > 0.5 and s.sentenceList[-1] == "Aux":                                                     
+                    self.adjustweight("ItoC", 1, self.r)
+
         
             elif sp > 0.5 and hip > 0.5: # (Word orders 2, 6) #subject and IP final, aux to the left of subject
                 AuxIndex = s.sentenceList.index("Aux")
                 if (AuxIndex > 0 and s.sentenceList.index("S") == AuxIndex + 1):
                     self.adjustweight("ItoC", 0, self.r)
                 
-                elif s.sentenceList.index("Aux") == 0 or s.sentenceList[-1] == "Aux":
+                elif s.sentenceList.index("Aux") == 0:
                     self.adjustweight("ItoC", 1, self.r) 
                 
+                elif s.sentenceList[-1] == "Aux" and s.sentenceList.index("S") == AuxIndex - 1):
+                    self.adjustweight("ItoC", 1, self.r)
               
            
             elif sp > 0.5 and hip < 0.5 and hcp > 0.5 and "Verb" in s.sentenceList: #subject and C final, IP initial, Aux immediately follows verb
                 if s.sentenceList.index("Verb") == s.sentenceList.index("Aux") + 1:
                     self.adjustweight("ItoC", 0, self.conservativerate)
-                elif s.sentenceList.index("Aux") == 0 or s.sentenceList[-1] == "Aux":
+                elif s.sentenceList.index("Aux") == 0: # if it's Comp Final and aux is first, it did not move to C.
+                    self.adjustweight("ItoC", 0, self.r)
+                elif s.sentenceList[-1] == "Aux": #if it's the last thing in the sentence it moved to C. If it's first it did not.
                     self.adjustweight("ItoC", 1, self.r)
 
             elif sp < 0.5 and hip > 0.5 and hcp < 0.5 and "Verb" in s.sentenceList: #subject and C initial, IP final, Aux immediately precedes verb
