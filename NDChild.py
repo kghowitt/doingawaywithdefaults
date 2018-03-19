@@ -137,7 +137,7 @@ class NDChild(object):
                 if Sindex > 0 and s.sentenceList.index("Aux") == Sindex + 1:
                     self.adjustweight("ItoC", 0, self.r)
                 
-                elif hcp < 0.5 and (s.sentenceList.index("Aux")-s.sentenceList.index("S") < 0: 
+                elif hcp < 0.5 and (s.sentenceList.index("Aux") - s.sentenceList.index("S")) < 0: 
                 #above code aux - s position less than 0 means aux precedes s 
                     self.adjustweight("ItoC", 1, self.r)
 
