@@ -70,7 +70,9 @@ class NDChild(object):
         if self.grammar["TM"] > 0.5 and "[+WA]" not in s.sentenceStr:
             self.adjustweight("OPT",1,self.r)
          
-        #elif 
+        #first word in sentence is any of those & overt subject and full complemenets in VP
+        elif (s.sentenceList[0] in ["ka","Verb","Aux","Not","Never"]) and ("S" in s.sentenceStr) and ("01" in s.sentenceStr) and ("02" in s.sentenceStr) and ("03" in s.sentenceStr) and ("P" in s.sentenceStr) and ("Adv" in s.sentenceStr):#all of [O1, O2, P O3, Adv] in VP:
+            self.adjustweight("OPT",1,self.r) #Opt to 1 unambig
          
         
 
@@ -78,6 +80,7 @@ class NDChild(object):
         if s.inflection == "DEC" and "S" not in s.sentenceStr and s.outOblique():
             self.adjustweight("NS",1,self.r)
             self.adjustweight("OPT",1, self.r)
+            
         elif s.inflection == "DEC" and "S" in s.sentenceStr and s.outOblique():
             self.adjustweight("NS",0,self.conservativerate)
 
@@ -151,7 +154,10 @@ class NDChild(object):
                     self.adjustweight("ItoC", 0, self.r)
                 
                 elif s.sentenceList.index("Aux") == 0:
-                    self.adjustweight("ItoC", 1, self.r) 
+                    self.adjustweight("ItoC", 1, self.r)
+                
+                elif hcp < 0.5 and (s.sentenceList.index("Aux") < s.sentenceList.index("Verb")):
+                    self.adjustweight("ItoC", 1, self.r)
                 
                 elif s.sentenceList[-1] == "Aux" and s.sentenceList.index("S") == (AuxIndex - 1):
                     self.adjustweight("ItoC", 1, self.r)
