@@ -69,6 +69,9 @@ class NDChild(object):
     def optEtrigger(self, s):
         if self.grammar["TM"] > 0.5 and "[+WA]" not in s.sentenceStr:
             self.adjustweight("OPT",1,self.r)
+        
+        elif self.grammar["TM"] > 0.5 and "[+WA]" in s.sentenceStr:
+            self.adjustweight("OPT",0, self.conservativerate)
          
         #first word in sentence is any of those & overt subject and full complemenets in VP
         elif (s.sentenceList[0] in ["ka","Verb","Aux","Not","Never"]) and ("S" in s.sentenceStr) and ("01" in s.sentenceStr) and ("02" in s.sentenceStr) and ("03" in s.sentenceStr) and ("P" in s.sentenceStr) and ("Adv" in s.sentenceStr):#all of [O1, O2, P O3, Adv] in VP:
@@ -198,8 +201,18 @@ class NDChild(object):
                     for idx in indexlist:
                         if ( Vindex < idx < Auxindex ) or (Vindex > idx > Auxindex): #if item in index list between them
                             self.adjustweight("ItoC", 1, self.r) #set toward 1
-                            break            
+                            break
+                            
+        elif s.inflection == "DEC" and "Never" in s.sentenceStr and "Verb" in s.sentenceStr and "O1" in s.sentenceStr:
+            neverPos = s.indexString("Never")
+            verbPos = s.indexString("Verb")
+            O1Pos = s.indexString("O1")
+            
+            if (neverPos > -1 and verbPos == neverPos+1 and O1Pos == verbPos+1) or (O1Pos > -1 and verbPos == O1Pos+1 and neverPos == verbPos + 1):
+                self.adjustweight("ItoC", 0, self.r)
+            
   
+
     def ahEtrigger(self, s):
         if (s.inflection == "DEC" or s.inflection == "Q") and ("Aux" not in s.sentenceStr and "Never" in s.sentenceStr and "Verb" in s.sentenceStr and "O1" in s.sentenceStr):
             neverPos = s.indexString("Never")
@@ -222,6 +235,7 @@ class NDChild(object):
             
         elif s.inflection == "Q"and "ka" not in s.sentenceStr and "WH" not in s.sentenceStr:
             self.adjustweight("QInv", 1, self.r)
+            self.adjustweight("ItoC", 1, self.conservativerate)
      
                             
             
