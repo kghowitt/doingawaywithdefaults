@@ -203,15 +203,14 @@ class NDChild(object):
                             self.adjustweight("ItoC", 1, self.r) #set toward 1
                             break
                             
-        elif s.inflection == "DEC" and "Never" in s.sentenceStr and "Verb" in s.sentenceStr and "O1" in s.sentenceStr:
-            neverPos = s.indexString("Never")
-            verbPos = s.indexString("Verb")
-            O1Pos = s.indexString("O1")
+#        elif s.inflection == "DEC" and "Never" in s.sentenceStr and "Verb" in s.sentenceStr and "O1" in s.sentenceStr:
+#            neverPos = s.indexString("Never")
+#            verbPos = s.indexString("Verb")
+#            O1Pos = s.indexString("O1")
             
-            if (neverPos > -1 and verbPos == neverPos+1 and O1Pos == verbPos+1) or (O1Pos > -1 and verbPos == O1Pos+1 and neverPos == verbPos + 1):
-                self.adjustweight("ItoC", 0, self.r)
-            
-  
+#            if (neverPos > -1 and verbPos == neverPos+1 and O1Pos == verbPos+1) or (O1Pos > -1 and verbPos == O1Pos+1 and neverPos == verbPos + 1):
+#                self.adjustweight("ItoC", 0, self.r)
+             
 
     def ahEtrigger(self, s):
         if (s.inflection == "DEC" or s.inflection == "Q") and ("Aux" not in s.sentenceStr and "Never" in s.sentenceStr and "Verb" in s.sentenceStr and "O1" in s.sentenceStr):
@@ -235,7 +234,7 @@ class NDChild(object):
             
         elif s.inflection == "Q"and "ka" not in s.sentenceStr and "WH" not in s.sentenceStr:
             self.adjustweight("QInv", 1, self.r)
-            self.adjustweight("ItoC", 1, self.conservativerate)
+#            self.adjustweight("ItoC", 1, self.conservativerate)
      
                             
             
