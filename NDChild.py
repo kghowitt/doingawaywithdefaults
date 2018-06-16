@@ -156,13 +156,16 @@ class NDChild(object):
                 if (AuxIndex > 0 and s.sentenceList.index("S") == AuxIndex + 1):
                     self.adjustweight("ItoC", 0, self.r)
                 
+                elif hcp > 0.5 and s.sentenceList[-1] == "Aux" and s.sentenceList.index("S") == (AuxIndex - 1):
+                    self.adjustweight("ItoC", 1, self.r)
+                
                 elif s.sentenceList.index("Aux") == 0:
                     self.adjustweight("ItoC", 1, self.r)
                 
                 elif hcp < 0.5 and (s.sentenceList.index("Aux") < s.sentenceList.index("Verb")):
                     self.adjustweight("ItoC", 1, self.r)
                 
-                elif s.sentenceList[-1] == "Aux" and s.sentenceList.index("S") == (AuxIndex - 1):
+                elif hcp > 0.5 and s.sentenceList[-1] == "Aux" and s.sentenceList.index("S") == (AuxIndex - 1):
                     self.adjustweight("ItoC", 1, self.r)
               
            
@@ -203,13 +206,13 @@ class NDChild(object):
                             self.adjustweight("ItoC", 1, self.r) #set toward 1
                             break
                             
-#        elif s.inflection == "DEC" and "Never" in s.sentenceStr and "Verb" in s.sentenceStr and "O1" in s.sentenceStr:
-#            neverPos = s.indexString("Never")
-#            verbPos = s.indexString("Verb")
-#            O1Pos = s.indexString("O1")
+        elif s.inflection == "DEC" and "Never" in s.sentenceStr and "Verb" in s.sentenceStr and "O1" in s.sentenceStr and ("Aux" not in s.sentenceStr):
+            neverPos = s.indexString("Never")
+            verbPos = s.indexString("Verb")
+            O1Pos = s.indexString("O1")
             
-#            if (neverPos > -1 and verbPos == neverPos+1 and O1Pos == verbPos+1) or (O1Pos > -1 and verbPos == O1Pos+1 and neverPos == verbPos + 1):
-#                self.adjustweight("ItoC", 0, self.r)
+            if (neverPos > -1 and verbPos == neverPos+1 and O1Pos == verbPos+1) or (O1Pos > -1 and verbPos == O1Pos+1 and neverPos == verbPos + 1):
+                self.adjustweight("ItoC", 0, self.r)
              
 
     def ahEtrigger(self, s):
