@@ -159,13 +159,10 @@ class NDChild(object):
                 elif hcp > 0.5 and s.sentenceList[-1] == "Aux" and s.sentenceList.index("S") == (AuxIndex - 1):
                     self.adjustweight("ItoC", 1, self.r)
                 
-                elif s.sentenceList.index("Aux") == 0:
+                elif hcp < 0.5 and s.sentenceList.index("Aux") == 0:
                     self.adjustweight("ItoC", 1, self.r)
                 
                 elif hcp < 0.5 and (s.sentenceList.index("Aux") < s.sentenceList.index("Verb")):
-                    self.adjustweight("ItoC", 1, self.r)
-                
-                elif hcp > 0.5 and s.sentenceList[-1] == "Aux" and s.sentenceList.index("S") == (AuxIndex - 1):
                     self.adjustweight("ItoC", 1, self.r)
               
            
