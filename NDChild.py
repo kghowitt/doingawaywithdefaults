@@ -74,8 +74,12 @@ class NDChild(object):
             self.adjustweight("OPT",0, self.conservativerate)
          
         #first word in sentence is any of those & overt subject and full complemenets in VP
-        elif (s.sentenceList[0] in ["ka","Verb","Aux","Not","Never"]) and ("S" in s.sentenceStr) and ("01" in s.sentenceStr) and ("02" in s.sentenceStr) and ("03" in s.sentenceStr) and ("P" in s.sentenceStr) and ("Adv" in s.sentenceStr):#all of [O1, O2, P O3, Adv] in VP:
-            self.adjustweight("OPT",1,self.r) #Opt to 1 unambig
+        elif (self.grammar["NT"] < 0.5):
+            if (s.sentenceList[0] in ["ka","Verb","Aux","Not","Never"]): 
+                self.adjustweight("OPT",1,self.r) #Opt to 1 unambig
+        
+            else:
+                self.adjustweight("OPT",1,self.conservativerate)
          
         
 
