@@ -67,10 +67,10 @@ class NDChild(object):
 
     #fourth parameter Optional Topic (0 is obligatory,  1 is optional)
     def optEtrigger(self, s):
-        if self.grammar["TM"] > 0.5 and "[+WA]" not in s.sentenceStr:
+        if self.grammar["TM"] > 0.5 and self.grammar["NT"] < 0.5 and "[+WA]" not in s.sentenceStr:
             self.adjustweight("OPT",1,self.r)
         
-        elif self.grammar["TM"] > 0.5 and "[+WA]" in s.sentenceStr:
+        elif self.grammar["TM"] > 0.5 and self.grammar["NT"] < 0.5 and "[+WA]" in s.sentenceStr:
             self.adjustweight("OPT",0, self.conservativerate)
          
         #first word in sentence is any of those & overt subject and full complemenets in VP
@@ -78,8 +78,8 @@ class NDChild(object):
             if (s.sentenceList[0] in ["ka","Verb","Aux","Not","Never"]): 
                 self.adjustweight("OPT",1,self.r) #Opt to 1 unambig
         
-            else:
-                self.adjustweight("OPT",1,self.conservativerate)
+            elif self.grammar["NT"] < 0.5 and sentence.outOblique():
+                self.adjustweight("OPT",0,self.conservativerate)
          
         
 
@@ -182,7 +182,7 @@ class NDChild(object):
                 if s.sentenceList.index("Aux") == s.sentenceList.index("Verb") + 1:
                     self.adjustweight("ItoC", 0, self.r)
                 else:
-                    self.adjustweight("ItoC", 1, self.conservativerate)
+                    self.adjustweight("ItoC", 1, self.r)
                     #will experiment with aggressive rate
   
             elif "Aux" in s.sentenceStr and "Verb" in s.sentenceList: #check if aux and verb in sentence and something comes between them
