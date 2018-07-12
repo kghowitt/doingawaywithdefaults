@@ -78,7 +78,7 @@ class NDChild(object):
             if (s.sentenceList[0] in ["ka","Verb","Aux","Not","Never"]): 
                 self.adjustweight("OPT",1,self.r) #Opt to 1 unambig
         
-            elif self.grammar["NT"] < 0.5 and sentence.outOblique():
+            elif self.grammar["NT"] < 0.5 and s.outOblique():
                 self.adjustweight("OPT",0,self.conservativerate)
          
         
